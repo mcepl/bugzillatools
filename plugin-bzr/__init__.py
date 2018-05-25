@@ -91,34 +91,36 @@ a bug URL and status in the revision metadata), invoke Bazaar thusly::
 
     bzr commit -m 'fix bug 123' --fixes example:123
 """
+import sys
 
-import bzrlib.api
-import bzrlib.commands
-import bzrlib.trace
+if sys.version_info[0] == 2:
+    import bzrlib.api
+    import bzrlib.commands
+    import bzrlib.trace
 
-import bzlib
+    import bzlib
 
-from . import hooks
+    from . import hooks
 
-# plugin setup
-version_info = bzlib.version_info
+    # plugin setup
+    version_info = bzlib.version_info
 
-COMPATIBLE_BZR_VERSIONS = [
-    (2, 0, 0),
-    (2, 1, 0),
-    (2, 2, 0),
-    (2, 3, 0),
-]
+    COMPATIBLE_BZR_VERSIONS = [
+        (2, 0, 0),
+        (2, 1, 0),
+        (2, 2, 0),
+        (2, 3, 0),
+    ]
 
-bzrlib.api.require_any_api(bzrlib, COMPATIBLE_BZR_VERSIONS)
+    bzrlib.api.require_any_api(bzrlib, COMPATIBLE_BZR_VERSIONS)
 
-if __name__ != 'bzrlib.plugins.bugzillatools':
-    bzrlib.trace.warning(
-        'Not running as bzrlib.plugins.bugzillatools; things may break.')
+    if __name__ != 'bzrlib.plugins.bugzillatools':
+        bzrlib.trace.warning(
+            'Not running as bzrlib.plugins.bugzillatools; things may break.')
 
-# install the get_command hook
-bzrlib.commands.Command.hooks.install_named_hook(
-    'get_command',
-    hooks.get_command_hook,
-    'bugzilla plugin - extend cmd_commit'
-)
+    # install the get_command hook
+    bzrlib.commands.Command.hooks.install_named_hook(
+        'get_command',
+        hooks.get_command_hook,
+        'bugzilla plugin - extend cmd_commit'
+    )

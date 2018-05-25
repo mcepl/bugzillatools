@@ -40,7 +40,7 @@ def check_section(section):
     raise ConfigError('invalid section: {}'.format(section))
 
 
-class Config(ConfigParser.SafeConfigParser):
+class Config(ConfigParser.ConfigParser):
     _instances = {}
 
     @classmethod
@@ -52,16 +52,16 @@ class Config(ConfigParser.SafeConfigParser):
 
     def __init__(self, path):
         path = os.path.expanduser(path)
-        ConfigParser.SafeConfigParser.__init__(self)
+        ConfigParser.ConfigParser.__init__(self)
         self._path = path
         self.read(self._path)
 
     def write(self):
         with open(self._path, 'w') as fp:
-            ConfigParser.SafeConfigParser.write(self, fp)
+            ConfigParser.ConfigParser.write(self, fp)
 
     def add_section(self, section):
-        ConfigParser.SafeConfigParser.add_section(self, check_section(section))
+        ConfigParser.ConfigParser.add_section(self, check_section(section))
 
 
 NoSectionError = ConfigParser.NoSectionError
